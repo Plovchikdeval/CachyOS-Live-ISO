@@ -20,7 +20,7 @@ jobs:
         run: |
           pacman -Sy --noconfirm archlinux-keyring
           pacman -Syu --noconfirm
-          pacman -Sy --noconfirm archiso squashfs-tools xorriso sudo
+          pacman -Sy --noconfirm archiso squashfs-tools xorriso sudo grub efibootmgr
 
       - name: Disable SigLevel
         run: |

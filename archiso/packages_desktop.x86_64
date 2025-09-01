@@ -207,6 +207,4 @@ xorg-xrdb
 yad
 zfs-utils
 broadcom-wl
-broadcom-wl-dkms
 linux-headers
-dkms

@@ -1,0 +1,29 @@
+name: Build CachyOS ISO with Broadcom
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y archiso squashfs-tools xorriso
+
+      - name: Build ISO
+        run: |
+          sudo ./buildiso.sh -p desktop -v
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v3
+        with:
+          name: cachyos-broadcom-iso
+          path: out/*.iso

@@ -1,22 +1,30 @@
-name: Build CachyOS ISO with Broadcom
+name: Build CachyOS ISO
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - master 
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y archiso squashfs-tools xorriso
+          pacman -Sy --noconfirm archlinux-keyring
+          pacman -Syu --noconfirm
+          pacman -Sy --noconfirm archiso squashfs-tools xorriso sudo
+
+      - name: Disable SigLevel
+        run: |
+          sed -i 's/^SigLevel.*/SigLevel = Never/' etc/pacman.conf || true
 
       - name: Build ISO
         run: |
@@ -25,5 +33,5 @@ jobs:
       - name: Upload ISO
         uses: actions/upload-artifact@v4
         with:
-          name: cachyos-broadcom-iso
+          name: cachyos-iso
           path: out/*.iso
